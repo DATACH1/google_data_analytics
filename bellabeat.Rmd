@@ -1,0 +1,95 @@
+---
+title: "bellabeat (case study)"
+author: "Chone1"
+date: "2022-11-22"
+output: html_document
+---
+
+![*Note: Image designed for illustrative purpose only.*](bellabeat.png)
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Introduction
+
+This is a case study from the Google Data Analytics Professional Certificate of Coursera. The analysis presented in this notebook has the purpose to put in practice all the concepts, tools, and acquired knowledge through weeks of studying of the course.
+
+## About the company
+
+-   Bellabeat is a high-tech company that manufactures health-focused smart products for women that collects data on activity, sleep, stress, and reproductive health.
+
+-   The products that the company commercializes are the "*bellabeat app*", "*the leaf*" (a wellnes tracker in form of a bracelett, necklace, or clip), a wearable watch knowned as "*the time*", and a water bottle that tracks the water intake using smart technology called "*spring*". Bellabeat also offers a subscription-based membership program for users.
+
+-   Bellabeat is a successful small company, but they have the potential to become a larger player in the global smart device market.
+
+## Analysis methodology
+
+The current analysis has been developed using the six stage analysis methodology studied through out the course. This stages consists in **ask** effective questions to define the problem, **prepare** the data, **process** and transform the data through cleaning, and verifying it, **analyze** data with the proper tools available and identified patterns, **share** the findings with attractive and effective visualization, and **act** wich means make decisions using the analysis that is presented.
+
+## Stage 1: Ask
+
+There are three siginifcant questions that could lead to define a problem to solve:
+
+-   What are some trends in smart device usage?
+
+-   How could these trends apply to Bellabeat customers?
+
+-   How could these trends help influence Bellabeat marketing strategy?
+
+It is clear that the business task is to grow its share in the smart devices market through empower women giving them knowledge about their own health and habits.
+
+## Stage 2 and 3: Prepare and Process
+
+The characteristics of the data obtained allow us to conclude that they are suitable for carrying out this analysis based on:
+
+\-*Reliability*: The data set was originated by Amazon through a distributed survey to users between 03.12.2016-05.12.2016.
+
+\-*Original*: The source is considered as a second party data since it was collected indirectly from Amazon using their own audience.
+
+\-*Comprehensive*: The collected data comes from the users device of one of the leading companies in the smart device markets and integrates a variety of measures of physical activity.
+
+\-*Current*: The data has been collected during the months of march and may of 2016.
+
+\-*Cited*:Furberg, R., Brinton, J., Keating, M., & Ortiz, A. (2016). Crowd-sourced Fitbit datasets 03.12.2016-05.12.2016 [Data set]. Zenodo. <https://doi.org/10.5281/zenodo.53894>
+
+### Cleaning Data
+
+Based on the Central Limit Theorem (CLT), all data sets were checked using R group_by function to determine if the sample was adequate (\>30) to minimize bias in the data. The R code used:
+
+```{r cars}
+install.packages("tidyverse")
+library(tidyverse)
+library(readr)
+dailyActivity_merged_2 <- read_csv("dailyActivity_merged 2.csv")
+CLT_activty <- dailyActivity_merged_2 %>% group_by(Id) %>% summarise(n = n())
+view (CLT_activty)
+```
+
+This analysis found that 4 out of 5 data sets obtained meet the CLT criteria: dailyActivity, dailyCalories, dailyintensities, and dailySteps, being heartrate not able to meet it.
+
+This is an example of the result for dailyActivity_merged.csv dataset where 33 participants provide data about their daily activity:
+
+```{r}
+data <- CLT_activty[1:33, ]
+knitr::kable(data,
+caption = "CLT criteria")
+```
+
+The data sets was also cleaned using functions in Excel.
+
+## Stage 4 and 5 : Analyze and Share
+
+Various research centers have conducted studies on the benefits of walking as a low-impact physical activity, including the National Cancer Institute (NCI) and National Institute on Aging (NIA) and the Centers for Disease Control and Prevention (CDC). In their analysis, the researchers compared the risk of death over the follow-up period among people who took fewer than 4,000, up to 8,000, or 12,000 or more steps a day, concluding that higher step counts were also associated with lower rates of death from heart disease and cancer. These benefits were consistent across age, sex, and race groups.
+
+The following graph illustrates that there is a large majority of users concentrated in the range of 5 to 10 thousand steps.
+
+
+```{r pressure, echo=FALSE}
+dailyActivity_merged_CLEAN <- read_csv("dailyActivity_merged_CLEAN.csv")
+ggplot(data=dailyActivity_merged_CLEAN)+geom_point (mapping = aes (x=TotalSteps, y=Calories))
+```
+
+## Stage 6 : Act
+
+Knowing that there is a large part of the user sample that tends to walk less than 10,000 steps a day, the company could implement strategies to develop an improvement to the product to make its market aware of the reduction in the risk of developing diseases such as cancer by Increase your low-impact activity for which you could be tracked with your products or new software.
